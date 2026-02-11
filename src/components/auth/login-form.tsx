@@ -7,7 +7,7 @@ import { loginSchema } from "@/lib/validations/auth.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LoginForm() {
   const { login, isLoading, error } = useAuth();
@@ -40,6 +40,9 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Log in</CardTitle>
+        <CardDescription>
+          Demo: john@example.com / password123
+        </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -55,7 +58,6 @@ export function LoginForm() {
               name="email"
               type="email"
               placeholder="john@example.com"
-              defaultValue="john@example.com"
             />
             {formErrors.email && (
               <p className="text-sm text-destructive">{formErrors.email}</p>
@@ -67,7 +69,7 @@ export function LoginForm() {
               id="password"
               name="password"
               type="password"
-              defaultValue="password123"
+              placeholder="••••••••"
             />
             {formErrors.password && (
               <p className="text-sm text-destructive">{formErrors.password}</p>

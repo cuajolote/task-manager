@@ -12,8 +12,16 @@ import { toast } from "sonner";
 import type { Task, TaskStatus } from "@/lib/types";
 
 export default function TasksPage() {
-  const { tasks, isLoading, filters, setFilters, createTask, editTask, deleteTask } =
-    useTasks();
+  const {
+    tasks,
+    allTasks,
+    isLoading,
+    filters,
+    setFilters,
+    createTask,
+    editTask,
+    deleteTask,
+  } = useTasks();
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -29,7 +37,11 @@ export default function TasksPage() {
     setFormOpen(true);
   };
 
-  const handleFormSubmit = async (data: { title: string; description?: string; status?: TaskStatus }) => {
+  const handleFormSubmit = async (data: {
+    title: string;
+    description?: string;
+    status?: TaskStatus;
+  }) => {
     if (editingTask) {
       await editTask(editingTask.id, data);
       toast.success("Task updated");
@@ -44,10 +56,23 @@ export default function TasksPage() {
     toast.success("Task deleted");
   };
 
+  const counts = {
+    total: allTasks.length,
+    pending: allTasks.filter((t) => t.status === "pending").length,
+    in_progress: allTasks.filter((t) => t.status === "in_progress").length,
+    completed: allTasks.filter((t) => t.status === "completed").length,
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h2 className="text-2xl font-bold tracking-tight">Tasks</h2>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Tasks</h2>
+          <p className="text-sm text-muted-foreground">
+            {counts.total} total &middot; {counts.pending} pending &middot;{" "}
+            {counts.in_progress} in progress &middot; {counts.completed} completed
+          </p>
+        </div>
         <Button onClick={handleCreate}>New Task</Button>
       </div>
 
@@ -66,10 +91,16 @@ export default function TasksPage() {
         </div>
       ) : tasks.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No tasks found.</p>
-          <Button variant="link" onClick={handleCreate}>
-            Create your first task
-          </Button>
+          <p className="text-muted-foreground">
+            {filters.status !== "all" || filters.search
+              ? "No tasks match your filters."
+              : "No tasks yet."}
+          </p>
+          {!filters.search && filters.status === "all" && (
+            <Button variant="link" onClick={handleCreate}>
+              Create your first task
+            </Button>
+          )}
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

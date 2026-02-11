@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useTaskStore } from "@/stores/task.store";
 import { apiClient } from "@/lib/api-client";
-import type { Task, CreateTaskInput, UpdateTaskInput } from "@/lib/types";
+import type { Task, CreateTaskInput, UpdateTaskInput, ApiResponse } from "@/lib/types";
 
 export function useTasks() {
   const {
@@ -19,7 +19,7 @@ export function useTasks() {
   const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await apiClient.get<{ data: Task[] }>("/api/tasks");
+      const res = await apiClient.get<ApiResponse<Task[]>>("/api/tasks");
       setTasks(res.data);
     } catch (err) {
       console.error("Failed to fetch tasks:", err);
@@ -33,13 +33,13 @@ export function useTasks() {
   }, [fetchTasks]);
 
   const createTask = async (input: CreateTaskInput) => {
-    const res = await apiClient.post<{ data: Task }>("/api/tasks", input);
+    const res = await apiClient.post<ApiResponse<Task>>("/api/tasks", input);
     addTask(res.data);
     return res.data;
   };
 
   const editTask = async (id: string, input: UpdateTaskInput) => {
-    const res = await apiClient.put<{ data: Task }>(`/api/tasks/${id}`, input);
+    const res = await apiClient.put<ApiResponse<Task>>(`/api/tasks/${id}`, input);
     updateTask(id, res.data);
     return res.data;
   };

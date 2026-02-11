@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { apiClient } from "@/lib/api-client";
-import type { AuthResponse } from "@/lib/types";
+import type { AuthResponse, ApiResponse } from "@/lib/types";
 
 export function useAuth() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export function useAuth() {
     setError(null);
 
     try {
-      const res = await apiClient.post<{ data: AuthResponse }>("/api/auth/login", {
+      const res = await apiClient.post<ApiResponse<AuthResponse>>("/api/auth/login", {
         email,
         password,
       });
@@ -33,7 +33,7 @@ export function useAuth() {
     setError(null);
 
     try {
-      const res = await apiClient.post<{ data: AuthResponse }>("/api/auth/register", {
+      const res = await apiClient.post<ApiResponse<AuthResponse>>("/api/auth/register", {
         name,
         email,
         password,

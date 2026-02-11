@@ -1,10 +1,6 @@
-import type { Task, User } from "@/lib/types";
+import type { Task, DbUser, User, TokenPayload } from "@/lib/types";
 
 // In-memory mock data — resets on server restart
-
-interface DbUser extends User {
-  password: string;
-}
 
 export const users: DbUser[] = [
   { id: "usr_1", name: "John Doe", email: "john@example.com", password: "password123" },
@@ -45,29 +41,22 @@ export const tasks: Task[] = [
   },
 ];
 
-let userCounter = users.length;
-let taskCounter = tasks.length;
+let userCounter: number = users.length;
+let taskCounter: number = tasks.length;
 
 export const generateId = {
-  user: () => `usr_${++userCounter}`,
-  task: () => `tsk_${++taskCounter}`,
+  user: (): string => `usr_${++userCounter}`,
+  task: (): string => `tsk_${++taskCounter}`,
 };
 
-export const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
+export const delay = (ms: number = 300): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-export function createToken(userId: string, email: string) {
-  return btoa(JSON.stringify({ sub: userId, email, iat: Date.now() }));
+export function createToken(userId: string, email: string): string {
+  const payload: TokenPayload = { sub: userId, email, iat: Date.now() };
+  return btoa(JSON.stringify(payload));
 }
 
 export function toSafeUser(user: DbUser): User {
   return { id: user.id, name: user.name, email: user.email };
-}
-
-export function setAuthCookie(response: Response, token: string) {
-  (response as any).cookies?.set?.("auth-token", token, {
-    httpOnly: true,
-    sameSite: "lax" as const,
-    maxAge: 60 * 60 * 24 * 7,
-    path: "/",
-  });
 }

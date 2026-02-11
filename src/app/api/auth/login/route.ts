@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { delay, users, createToken, toSafeUser } from "../../_db";
+import type { LoginInput } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
   await delay();
 
-  const { email, password } = await request.json();
+  const { email, password }: LoginInput = await request.json();
   const user = users.find((u) => u.email === email);
 
   if (!user || user.password !== password) {

@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { delay, tasks, generateId } from "../_db";
+import type { CreateTaskInput, Task } from "@/lib/types";
 
 // GET /api/tasks
 export async function GET(request: NextRequest) {
   await delay();
 
-  const status = request.nextUrl.searchParams.get("status");
-  let filtered = [...tasks];
+  const status: string | null = request.nextUrl.searchParams.get("status");
+  let filtered: Task[] = [...tasks];
 
   if (status && status !== "all") {
     filtered = filtered.filter((t) => t.status === status);
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   await delay();
 
-  const { title, description } = await request.json();
+  const { title, description }: CreateTaskInput = await request.json();
   const now = new Date().toISOString();
 
   const task = {

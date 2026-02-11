@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { delay, tasks } from "../../_db";
+import type { UpdateTaskInput } from "@/lib/types";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -28,7 +29,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: { message: "Task not found" } }, { status: 404 });
   }
 
-  const body = await request.json();
+  const body: UpdateTaskInput = await request.json();
   tasks[index] = { ...tasks[index], ...body, updatedAt: new Date().toISOString() };
 
   return NextResponse.json({ data: tasks[index] });

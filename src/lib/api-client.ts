@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth.store";
-import type { ApiError } from "./types";
+import type { ApiErrorResponse } from "./types";
 
 const BASE_URL = "";
 
@@ -26,8 +26,8 @@ class ApiClient {
     });
 
     if (!response.ok) {
-      const error: { error: ApiError } = await response.json();
-      throw new Error(error.error.message);
+      const errorBody: ApiErrorResponse = await response.json();
+      throw new Error(errorBody.error.message);
     }
 
     // 204 No Content

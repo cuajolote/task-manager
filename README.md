@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Manager
+
+A task management application built with Next.js, React 18, TypeScript, and Tailwind CSS.
+
+## Features
+
+- **Authentication** — Simulated JWT login and registration with cookie-based session persistence
+- **Task CRUD** — Create, read, update, and delete tasks with real-time UI updates
+- **Status management** — Track tasks as Pending, In Progress, or Completed
+- **Filtering** — Filter tasks by status and search by title
+- **Responsive design** — Works on mobile, tablet, and desktop
+- **Form validation** — Client-side validation using Zod schemas
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **State Management**: Zustand
+- **Validation**: Zod
+- **UI Components**: shadcn/ui + Tailwind CSS
+- **Mock Backend**: Next.js API Route Handlers (in-memory data)
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js routes and API handlers
+│   ├── (auth)/             # Public pages (login, register)
+│   ├── (dashboard)/        # Protected pages (task list)
+│   └── api/                # Mock REST API
+│       ├── _db/            # In-memory database with seed data
+│       ├── auth/           # Auth endpoints (login, register, logout)
+│       └── tasks/          # Task CRUD endpoints
+├── components/             # React components
+│   ├── ui/                 # Base components (shadcn/ui)
+│   ├── tasks/              # Task-specific components
+│   ├── auth/               # Auth forms
+│   └── layout/             # Header, layout wrappers
+├── hooks/                  # Custom hooks (useAuth, useTasks)
+├── stores/                 # Zustand stores (auth, tasks)
+├── lib/                    # Utilities, types, validation schemas
+└── middleware.ts           # Route protection
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+git clone <repo-url>
+cd task-manager
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Demo Credentials
 
-To learn more about Next.js, take a look at the following resources:
+The app comes with a pre-seeded user account:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Email**: john@example.com
+- **Password**: password123
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can also register a new account through the registration page.
 
-## Deploy on Vercel
+## Architecture Decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js API Routes as mock backend** — Instead of using external mock tools (json-server, MSW), the API is implemented as Next.js route handlers. This keeps everything in one project and simulates a real full-stack setup.
+- **Zustand over Redux** — For a project this size, Zustand provides sufficient state management with minimal boilerplate. The auth store uses the `persist` middleware to survive page refreshes.
+- **Simulated JWT** — The token is a base64-encoded JSON payload stored as an httpOnly cookie. The middleware checks for token existence to protect routes. No cryptographic verification is needed for a demo.
+- **Zod for validation** — Schemas are defined once and shared between form validation and type inference, reducing duplication.
+- **shadcn/ui** — Components are copied into the project (not installed as a dependency), allowing full customization while maintaining a consistent design system.

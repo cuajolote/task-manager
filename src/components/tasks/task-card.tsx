@@ -17,12 +17,22 @@ interface TaskCardProps {
   onDelete: (task: Task) => void;
 }
 
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
   return (
-    <Card>
+    <Card className="transition-shadow hover:shadow-md">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="space-y-1 flex-1 min-w-0 pr-2">
           <CardTitle className="text-base truncate">{task.title}</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            {formatDate(task.createdAt)}
+          </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <TaskStatusBadge status={task.status} />
