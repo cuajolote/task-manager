@@ -17,5 +17,6 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
+// Inferred types — keeps validation rules and TypeScript types in sync
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
