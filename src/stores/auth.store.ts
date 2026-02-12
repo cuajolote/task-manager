@@ -10,6 +10,8 @@ interface AuthState {
   logout: () => void;
 }
 
+// Persisted to localStorage so the session survives page reloads.
+// The `persist` middleware handles serialization/hydration automatically.
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({

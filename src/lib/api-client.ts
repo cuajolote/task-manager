@@ -1,10 +1,16 @@
 import { useAuthStore } from "@/stores/auth.store";
 import type { ApiErrorResponse } from "./types";
 
+// Empty base URL — API routes live on the same Next.js origin
 const BASE_URL = "";
 
+/**
+ * Centralized HTTP client that wraps fetch with auth headers and error handling.
+ * Reads the JWT token directly from Zustand (outside React) to attach it on every request.
+ */
 class ApiClient {
   private getToken(): string | null {
+    // Access store outside React via getState() — avoids prop drilling the token
     return useAuthStore.getState().token;
   }
 

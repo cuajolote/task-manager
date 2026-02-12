@@ -29,6 +29,8 @@ interface TaskFormDialogProps {
   task?: Task | null; // null = create mode
 }
 
+// Reusable dialog for both create and edit — mode is driven by the `task` prop.
+// When task is null → create mode, when task is provided → edit mode with pre-filled fields.
 export function TaskFormDialog({ open, onClose, onSubmit, task }: TaskFormDialogProps) {
   const isEditing = !!task;
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -49,14 +49,17 @@ export const generateId = {
   task: (): string => `tsk_${++taskCounter}`,
 };
 
+// Simulates network latency for a realistic feel
 export const delay = (ms: number = 300): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
+// Simulated JWT — base64-encoded payload without real cryptographic signing
 export function createToken(userId: string, email: string): string {
   const payload: TokenPayload = { sub: userId, email, iat: Date.now() };
   return btoa(JSON.stringify(payload));
 }
 
+// Strips password before sending user data to the client
 export function toSafeUser(user: DbUser): User {
   return { id: user.id, name: user.name, email: user.email };
 }

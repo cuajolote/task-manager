@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// Routes that don't require authentication
 const PUBLIC_PATHS = [
   "/login",
   "/register",
@@ -8,6 +9,10 @@ const PUBLIC_PATHS = [
   "/api/auth/register",
 ];
 
+/**
+ * Edge middleware that protects all routes behind authentication.
+ * Checks for the "auth-token" cookie — if missing, redirects to /login.
+ */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 

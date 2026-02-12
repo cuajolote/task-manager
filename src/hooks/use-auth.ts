@@ -4,6 +4,10 @@ import { useAuthStore } from "@/stores/auth.store";
 import { apiClient } from "@/lib/api-client";
 import type { AuthResponse, ApiResponse } from "@/lib/types";
 
+/**
+ * Handles the full auth lifecycle: login, register, and logout.
+ * On success stores user + token in Zustand and redirects to /tasks.
+ */
 export function useAuth() {
   const router = useRouter();
   const { user, isAuthenticated, setAuth, logout: clearAuth } = useAuthStore();

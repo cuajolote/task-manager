@@ -23,6 +23,7 @@ export function LoginForm() {
       password: formData.get("password") as string,
     };
 
+    // Validate with Zod before calling the API — shows inline errors without a network round-trip
     const result = loginSchema.safeParse(data);
     if (!result.success) {
       const errors: Record<string, string> = {};

@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+// Zod schemas used for client-side form validation before sending data to the API.
+// Inferred types (CreateTaskFormData, UpdateTaskFormData) keep forms and schemas in sync.
+
 export const taskStatusEnum = z.enum(["pending", "in_progress", "completed"]);
 
 export const createTaskSchema = z.object({

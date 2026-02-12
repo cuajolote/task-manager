@@ -3,6 +3,10 @@ import { useTaskStore } from "@/stores/task.store";
 import { apiClient } from "@/lib/api-client";
 import type { Task, CreateTaskInput, UpdateTaskInput, ApiResponse } from "@/lib/types";
 
+/**
+ * Bridges the API layer and the Zustand store.
+ * Fetches tasks on mount, exposes CRUD operations, and applies client-side filtering.
+ */
 export function useTasks() {
   const {
     tasks,

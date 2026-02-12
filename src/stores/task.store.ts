@@ -19,6 +19,8 @@ interface TaskState {
   setLoading: (loading: boolean) => void;
 }
 
+// Not persisted — tasks are fetched from the API on every mount.
+// Keeps filters and loading state alongside the task list for co-located updates.
 export const useTaskStore = create<TaskState>()((set) => ({
   tasks: [],
   filters: { status: "all", search: "" },
